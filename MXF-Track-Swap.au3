@@ -3,7 +3,7 @@
 #AutoIt3Wrapper_UseX64=n
 #AutoIt3Wrapper_Res_Comment=Swaps audio tracks in mxf files.
 #AutoIt3Wrapper_Res_Description=Swaps audio tracks in mxf files.
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.4
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.5
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_LegalCopyright=Conrad Zelck
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -268,7 +268,7 @@ AutoItSetOption("GUICoordMode", 1)
 While True
     Switch GUIGetMsg()
         Case $GUI_EVENT_CLOSE
-            ExitLoop
+            Exit
 		Case $g_hButtonChangeAD
 			GUICtrlSetState($g_hR15, $GUI_CHECKED)
 			GUICtrlSetState($g_hR26, $GUI_CHECKED)
