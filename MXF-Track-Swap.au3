@@ -91,15 +91,15 @@ GUICtrlCreateLabel("A5", -1, 30, 20, 20)
 GUICtrlCreateLabel("A6", -1, 20, 20, 20)
 GUICtrlCreateLabel("A7", -1, 30, 20, 20)
 GUICtrlCreateLabel("A8", -1, 20, 20, 20)
-Local $hLL = GUICtrlCreateLabel("L", -1, 30, 20, 20)
-Local $hLR = GUICtrlCreateLabel("R", -1, 20, 20, 20)
+Local $hLL = GUICtrlCreateLabel("wav L", -18, 30, 32, 20)
+Local $hLR = GUICtrlCreateLabel("wav R", -1, 20, 32, 20)
 If Not $g_bWavAvailable Then
 	GUICtrlSetColor($hLL, $COLOR_SILVER)
 	GUICtrlSetColor($hLR, $COLOR_SILVER)
 EndIf
 
 GUIStartGroup()
-Global $g_hRm1 = GUICtrlCreateRadio("", 30, -253, 20, 20)
+Global $g_hRm1 = GUICtrlCreateRadio("", 50, -253, 20, 20)
 Global $g_hR11 = GUICtrlCreateRadio("", -1, 30, 20, 20)
 GUICtrlSetState(-1, $GUI_CHECKED)
 Global $g_hR21 = GUICtrlCreateRadio("", -1, 20, 20, 20)
