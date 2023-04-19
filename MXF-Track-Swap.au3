@@ -3,7 +3,7 @@
 #AutoIt3Wrapper_UseX64=n
 #AutoIt3Wrapper_Res_Comment=Swaps audio tracks in mxf files.
 #AutoIt3Wrapper_Res_Description=Swaps audio tracks in mxf files.
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.5
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.6
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_LegalCopyright=Conrad Zelck
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -634,6 +634,11 @@ Func _ReWrap()
 	Next
 	; copy video, set audio to 24 bit, use shortest file (always the mxf file) as length, overwrite existing file
 	$sCommand &= ' -c:v copy -c:a pcm_s24le -shortest -y'
+	; set encoding date as ffmpeg otherwise wouldn't create a valid op1a v1.3 file
+	Local $sDate
+	$sDate = _NowCalc()
+	$sDate = StringReplace($sDate, "/", "-") & ".000" ; including ms
+	$sCommand &= ' -metadata creation_time="' & $sDate & '"'
 	; output file
 	Local $sSuffix
 	For $i = 1 To UBound($g_aRouting) -1
