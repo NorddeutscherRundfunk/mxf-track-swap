@@ -3,7 +3,7 @@
 #AutoIt3Wrapper_UseX64=n
 #AutoIt3Wrapper_Res_Comment=Swaps audio tracks in mxf files.
 #AutoIt3Wrapper_Res_Description=Swaps audio tracks in mxf files.
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.6
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.7
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_LegalCopyright=Conrad Zelck
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -644,7 +644,7 @@ Func _ReWrap()
 	For $i = 1 To UBound($g_aRouting) -1
 		$sSuffix &= '_' & $i & '-' & StringRegExpReplace(StringRegExpReplace($g_aRouting[$i], "\d:", ""), '[\[\]"]', "")
 	Next
-	$sSuffix &= '.mxf'
+	$sSuffix &= '.mxf"'
 	$sCommand &= ' "' & @TempDir & '\' & _StripFileExtension(_FileName($g_sMXFFile)) & $sSuffix
 	ConsoleWrite("$command: " & $sCommand & @CRLF)
 	_runFFmpeg('ffmpeg ' & $sCommand, $sPathFFmpeg, 1)
