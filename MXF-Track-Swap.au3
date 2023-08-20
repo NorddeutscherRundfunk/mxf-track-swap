@@ -3,7 +3,7 @@
 #AutoIt3Wrapper_UseX64=n
 #AutoIt3Wrapper_Res_Comment=Swaps audio tracks in mxf files.
 #AutoIt3Wrapper_Res_Description=Swaps audio tracks in mxf files.
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.7
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.8
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_LegalCopyright=Conrad Zelck
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -307,237 +307,310 @@ WEnd
 
 #Region - track setting
 ; set audio tracks
-Global $g_aRouting[9]
+Global $g_aRoutingFFmpeg[9]
+Global $g_aRoutingBMX[9]
 Global $g_bMuteRouted = False
 Global $g_bExternalWavRouted = False
 ; track 1
 Select
 	Case GUICtrlRead($g_hRm1) = $GUI_CHECKED
-		$g_aRouting[1] = "1:0"
+		$g_aRoutingFFmpeg[1] = "1:0"
+		$g_aRoutingBMX[1] = "s1"
 		$g_bMuteRouted = True
 	Case GUICtrlRead($g_hR11) = $GUI_CHECKED
-		$g_aRouting[1] = "0:1"
+		$g_aRoutingFFmpeg[1] = "0:1"
+		$g_aRoutingBMX[1] = "0"
 	Case GUICtrlRead($g_hR21) = $GUI_CHECKED
-		$g_aRouting[1] = "0:2"
+		$g_aRoutingFFmpeg[1] = "0:2"
+		$g_aRoutingBMX[1] = "1"
 	Case GUICtrlRead($g_hR31) = $GUI_CHECKED
-		$g_aRouting[1] = "0:3"
+		$g_aRoutingFFmpeg[1] = "0:3"
+		$g_aRoutingBMX[1] = "2"
 	Case GUICtrlRead($g_hR41) = $GUI_CHECKED
-		$g_aRouting[1] = "0:4"
+		$g_aRoutingFFmpeg[1] = "0:4"
+		$g_aRoutingBMX[1] = "3"
 	Case GUICtrlRead($g_hR51) = $GUI_CHECKED
-		$g_aRouting[1] = "0:5"
+		$g_aRoutingFFmpeg[1] = "0:5"
+		$g_aRoutingBMX[1] = "4"
 	Case GUICtrlRead($g_hR61) = $GUI_CHECKED
-		$g_aRouting[1] = "0:6"
+		$g_aRoutingFFmpeg[1] = "0:6"
+		$g_aRoutingBMX[1] = "5"
 	Case GUICtrlRead($g_hR71) = $GUI_CHECKED
-		$g_aRouting[1] = "0:7"
+		$g_aRoutingFFmpeg[1] = "0:7"
+		$g_aRoutingBMX[1] = "6"
 	Case GUICtrlRead($g_hR81) = $GUI_CHECKED
-		$g_aRouting[1] = "0:8"
+		$g_aRoutingFFmpeg[1] = "0:8"
+		$g_aRoutingBMX[1] = "7"
 	Case GUICtrlRead($g_hRL1) = $GUI_CHECKED
-		$g_aRouting[1] = '"[L]"'
+		$g_aRoutingFFmpeg[1] = '"[L]"'
 		$g_bExternalWavRouted = True
 	Case GUICtrlRead($g_hRR1) = $GUI_CHECKED
-		$g_aRouting[1] = '"[R]"'
+		$g_aRoutingFFmpeg[1] = '"[R]"'
 		$g_bExternalWavRouted = True
 EndSelect
 ; track 2
 Select
 	Case GUICtrlRead($g_hRm2) = $GUI_CHECKED
-		$g_aRouting[2] = "1:0"
+		$g_aRoutingFFmpeg[2] = "1:0"
+		$g_aRoutingBMX[2] = "s1"
 		$g_bMuteRouted = True
 	Case GUICtrlRead($g_hR12) = $GUI_CHECKED
-		$g_aRouting[2] = "0:1"
+		$g_aRoutingFFmpeg[2] = "0:1"
+		$g_aRoutingBMX[2] = "0"
 	Case GUICtrlRead($g_hR22) = $GUI_CHECKED
-		$g_aRouting[2] = "0:2"
+		$g_aRoutingFFmpeg[2] = "0:2"
+		$g_aRoutingBMX[2] = "1"
 	Case GUICtrlRead($g_hR32) = $GUI_CHECKED
-		$g_aRouting[2] = "0:3"
+		$g_aRoutingFFmpeg[2] = "0:3"
+		$g_aRoutingBMX[2] = "2"
 	Case GUICtrlRead($g_hR42) = $GUI_CHECKED
-		$g_aRouting[2] = "0:4"
+		$g_aRoutingFFmpeg[2] = "0:4"
+		$g_aRoutingBMX[2] = "3"
 	Case GUICtrlRead($g_hR52) = $GUI_CHECKED
-		$g_aRouting[2] = "0:5"
+		$g_aRoutingFFmpeg[2] = "0:5"
+		$g_aRoutingBMX[2] = "4"
 	Case GUICtrlRead($g_hR62) = $GUI_CHECKED
-		$g_aRouting[2] = "0:6"
+		$g_aRoutingFFmpeg[2] = "0:6"
+		$g_aRoutingBMX[2] = "5"
 	Case GUICtrlRead($g_hR72) = $GUI_CHECKED
-		$g_aRouting[2] = "0:7"
+		$g_aRoutingFFmpeg[2] = "0:7"
+		$g_aRoutingBMX[2] = "6"
 	Case GUICtrlRead($g_hR82) = $GUI_CHECKED
-		$g_aRouting[2] = "0:8"
+		$g_aRoutingFFmpeg[2] = "0:8"
+		$g_aRoutingBMX[2] = "7"
 	Case GUICtrlRead($g_hRL2) = $GUI_CHECKED
-		$g_aRouting[2] = '"[L]"'
+		$g_aRoutingFFmpeg[2] = '"[L]"'
 		$g_bExternalWavRouted = True
 	Case GUICtrlRead($g_hRR2) = $GUI_CHECKED
-		$g_aRouting[2] = '"[R]"'
+		$g_aRoutingFFmpeg[2] = '"[R]"'
 		$g_bExternalWavRouted = True
 EndSelect
 ; track 3
 Select
 	Case GUICtrlRead($g_hRm3) = $GUI_CHECKED
-		$g_aRouting[3] = "1:0"
+		$g_aRoutingFFmpeg[3] = "1:0"
+		$g_aRoutingBMX[3] = "s1"
 		$g_bMuteRouted = True
 	Case GUICtrlRead($g_hR13) = $GUI_CHECKED
-		$g_aRouting[3] = "0:1"
+		$g_aRoutingFFmpeg[3] = "0:1"
+		$g_aRoutingBMX[3] = "0"
 	Case GUICtrlRead($g_hR23) = $GUI_CHECKED
-		$g_aRouting[3] = "0:2"
+		$g_aRoutingFFmpeg[3] = "0:2"
+		$g_aRoutingBMX[3] = "1"
 	Case GUICtrlRead($g_hR33) = $GUI_CHECKED
-		$g_aRouting[3] = "0:3"
+		$g_aRoutingFFmpeg[3] = "0:3"
+		$g_aRoutingBMX[3] = "2"
 	Case GUICtrlRead($g_hR43) = $GUI_CHECKED
-		$g_aRouting[3] = "0:4"
+		$g_aRoutingFFmpeg[3] = "0:4"
+		$g_aRoutingBMX[3] = "3"
 	Case GUICtrlRead($g_hR53) = $GUI_CHECKED
-		$g_aRouting[3] = "0:5"
+		$g_aRoutingFFmpeg[3] = "0:5"
+		$g_aRoutingBMX[3] = "4"
 	Case GUICtrlRead($g_hR63) = $GUI_CHECKED
-		$g_aRouting[3] = "0:6"
+		$g_aRoutingFFmpeg[3] = "0:6"
+		$g_aRoutingBMX[3] = "5"
 	Case GUICtrlRead($g_hR73) = $GUI_CHECKED
-		$g_aRouting[3] = "0:7"
+		$g_aRoutingFFmpeg[3] = "0:7"
+		$g_aRoutingBMX[3] = "6"
 	Case GUICtrlRead($g_hR83) = $GUI_CHECKED
-		$g_aRouting[3] = "0:8"
+		$g_aRoutingFFmpeg[3] = "0:8"
+		$g_aRoutingBMX[3] = "7"
 	Case GUICtrlRead($g_hRL3) = $GUI_CHECKED
-		$g_aRouting[3] = '"[L]"'
+		$g_aRoutingFFmpeg[3] = '"[L]"'
 		$g_bExternalWavRouted = True
 	Case GUICtrlRead($g_hRR3) = $GUI_CHECKED
-		$g_aRouting[3] = '"[R]"'
+		$g_aRoutingFFmpeg[3] = '"[R]"'
 		$g_bExternalWavRouted = True
 EndSelect
 ; track 4
 Select
 	Case GUICtrlRead($g_hRm4) = $GUI_CHECKED
-		$g_aRouting[4] = "1:0"
+		$g_aRoutingFFmpeg[4] = "1:0"
+		$g_aRoutingBMX[4] = "s1"
 		$g_bMuteRouted = True
 	Case GUICtrlRead($g_hR14) = $GUI_CHECKED
-		$g_aRouting[4] = "0:1"
+		$g_aRoutingFFmpeg[4] = "0:1"
+		$g_aRoutingBMX[4] = "0"
 	Case GUICtrlRead($g_hR24) = $GUI_CHECKED
-		$g_aRouting[4] = "0:2"
+		$g_aRoutingFFmpeg[4] = "0:2"
+		$g_aRoutingBMX[4] = "1"
 	Case GUICtrlRead($g_hR34) = $GUI_CHECKED
-		$g_aRouting[4] = "0:3"
+		$g_aRoutingFFmpeg[4] = "0:3"
+		$g_aRoutingBMX[4] = "2"
 	Case GUICtrlRead($g_hR44) = $GUI_CHECKED
-		$g_aRouting[4] = "0:4"
+		$g_aRoutingFFmpeg[4] = "0:4"
+		$g_aRoutingBMX[4] = "3"
 	Case GUICtrlRead($g_hR54) = $GUI_CHECKED
-		$g_aRouting[4] = "0:5"
+		$g_aRoutingFFmpeg[4] = "0:5"
+		$g_aRoutingBMX[4] = "4"
 	Case GUICtrlRead($g_hR64) = $GUI_CHECKED
-		$g_aRouting[4] = "0:6"
+		$g_aRoutingFFmpeg[4] = "0:6"
+		$g_aRoutingBMX[4] = "5"
 	Case GUICtrlRead($g_hR74) = $GUI_CHECKED
-		$g_aRouting[4] = "0:7"
+		$g_aRoutingFFmpeg[4] = "0:7"
+		$g_aRoutingBMX[4] = "6"
 	Case GUICtrlRead($g_hR84) = $GUI_CHECKED
-		$g_aRouting[4] = "0:8"
+		$g_aRoutingFFmpeg[4] = "0:8"
+		$g_aRoutingBMX[4] = "7"
 	Case GUICtrlRead($g_hRL4) = $GUI_CHECKED
-		$g_aRouting[4] = '"[L]"'
+		$g_aRoutingFFmpeg[4] = '"[L]"'
 		$g_bExternalWavRouted = True
 	Case GUICtrlRead($g_hRR4) = $GUI_CHECKED
-		$g_aRouting[4] = '"[R]"'
+		$g_aRoutingFFmpeg[4] = '"[R]"'
 		$g_bExternalWavRouted = True
 EndSelect
 ; track 5
 Select
 	Case GUICtrlRead($g_hRm5) = $GUI_CHECKED
-		$g_aRouting[5] = "1:0"
+		$g_aRoutingFFmpeg[5] = "1:0"
+		$g_aRoutingBMX[5] = "s1"
 		$g_bMuteRouted = True
 	Case GUICtrlRead($g_hR15) = $GUI_CHECKED
-		$g_aRouting[5] = "0:1"
+		$g_aRoutingFFmpeg[5] = "0:1"
+		$g_aRoutingBMX[5] = "0"
 	Case GUICtrlRead($g_hR25) = $GUI_CHECKED
-		$g_aRouting[5] = "0:2"
+		$g_aRoutingFFmpeg[5] = "0:2"
+		$g_aRoutingBMX[5] = "1"
 	Case GUICtrlRead($g_hR35) = $GUI_CHECKED
-		$g_aRouting[5] = "0:3"
+		$g_aRoutingFFmpeg[5] = "0:3"
+		$g_aRoutingBMX[5] = "2"
 	Case GUICtrlRead($g_hR45) = $GUI_CHECKED
-		$g_aRouting[5] = "0:4"
+		$g_aRoutingFFmpeg[5] = "0:4"
+		$g_aRoutingBMX[5] = "3"
 	Case GUICtrlRead($g_hR55) = $GUI_CHECKED
-		$g_aRouting[5] = "0:5"
+		$g_aRoutingFFmpeg[5] = "0:5"
+		$g_aRoutingBMX[5] = "4"
 	Case GUICtrlRead($g_hR65) = $GUI_CHECKED
-		$g_aRouting[5] = "0:6"
+		$g_aRoutingFFmpeg[5] = "0:6"
+		$g_aRoutingBMX[5] = "5"
 	Case GUICtrlRead($g_hR75) = $GUI_CHECKED
-		$g_aRouting[5] = "0:7"
+		$g_aRoutingFFmpeg[5] = "0:7"
+		$g_aRoutingBMX[5] = "6"
 	Case GUICtrlRead($g_hR85) = $GUI_CHECKED
-		$g_aRouting[5] = "0:8"
+		$g_aRoutingFFmpeg[5] = "0:8"
+		$g_aRoutingBMX[5] = "7"
 	Case GUICtrlRead($g_hRL5) = $GUI_CHECKED
-		$g_aRouting[5] = '"[L]"'
+		$g_aRoutingFFmpeg[5] = '"[L]"'
 		$g_bExternalWavRouted = True
 	Case GUICtrlRead($g_hRR5) = $GUI_CHECKED
-		$g_aRouting[5] = '"[R]"'
+		$g_aRoutingFFmpeg[5] = '"[R]"'
 		$g_bExternalWavRouted = True
 EndSelect
 ; track 6
 Select
 	Case GUICtrlRead($g_hRm6) = $GUI_CHECKED
-		$g_aRouting[6] = "1:0"
+		$g_aRoutingFFmpeg[6] = "1:0"
+		$g_aRoutingBMX[6] = "s1"
 		$g_bMuteRouted = True
 	Case GUICtrlRead($g_hR16) = $GUI_CHECKED
-		$g_aRouting[6] = "0:1"
+		$g_aRoutingFFmpeg[6] = "0:1"
+		$g_aRoutingBMX[6] = "0"
 	Case GUICtrlRead($g_hR26) = $GUI_CHECKED
-		$g_aRouting[6] = "0:2"
+		$g_aRoutingFFmpeg[6] = "0:2"
+		$g_aRoutingBMX[6] = "1"
 	Case GUICtrlRead($g_hR36) = $GUI_CHECKED
-		$g_aRouting[6] = "0:3"
+		$g_aRoutingFFmpeg[6] = "0:3"
+		$g_aRoutingBMX[6] = "2"
 	Case GUICtrlRead($g_hR46) = $GUI_CHECKED
-		$g_aRouting[6] = "0:4"
+		$g_aRoutingFFmpeg[6] = "0:4"
+		$g_aRoutingBMX[6] = "3"
 	Case GUICtrlRead($g_hR56) = $GUI_CHECKED
-		$g_aRouting[6] = "0:5"
+		$g_aRoutingFFmpeg[6] = "0:5"
+		$g_aRoutingBMX[6] = "4"
 	Case GUICtrlRead($g_hR66) = $GUI_CHECKED
-		$g_aRouting[6] = "0:6"
+		$g_aRoutingFFmpeg[6] = "0:6"
+		$g_aRoutingBMX[6] = "5"
 	Case GUICtrlRead($g_hR76) = $GUI_CHECKED
-		$g_aRouting[6] = "0:7"
+		$g_aRoutingFFmpeg[6] = "0:7"
+		$g_aRoutingBMX[6] = "6"
 	Case GUICtrlRead($g_hR86) = $GUI_CHECKED
-		$g_aRouting[6] = "0:8"
+		$g_aRoutingFFmpeg[6] = "0:8"
+		$g_aRoutingBMX[6] = "7"
 	Case GUICtrlRead($g_hRL6) = $GUI_CHECKED
-		$g_aRouting[6] = '"[L]"'
+		$g_aRoutingFFmpeg[6] = '"[L]"'
 		$g_bExternalWavRouted = True
 	Case GUICtrlRead($g_hRR6) = $GUI_CHECKED
-		$g_aRouting[6] = '"[R]"'
+		$g_aRoutingFFmpeg[6] = '"[R]"'
 		$g_bExternalWavRouted = True
 EndSelect
 ; track 7
 Select
 	Case GUICtrlRead($g_hRm7) = $GUI_CHECKED
-		$g_aRouting[7] = "1:0"
+		$g_aRoutingFFmpeg[7] = "1:0"
+		$g_aRoutingBMX[7] = "s1"
 		$g_bMuteRouted = True
 	Case GUICtrlRead($g_hR17) = $GUI_CHECKED
-		$g_aRouting[7] = "0:1"
+		$g_aRoutingFFmpeg[7] = "0:1"
+		$g_aRoutingBMX[7] = "0"
 	Case GUICtrlRead($g_hR27) = $GUI_CHECKED
-		$g_aRouting[7] = "0:2"
+		$g_aRoutingFFmpeg[7] = "0:2"
+		$g_aRoutingBMX[7] = "1"
 	Case GUICtrlRead($g_hR37) = $GUI_CHECKED
-		$g_aRouting[7] = "0:3"
+		$g_aRoutingFFmpeg[7] = "0:3"
+		$g_aRoutingBMX[7] = "2"
 	Case GUICtrlRead($g_hR47) = $GUI_CHECKED
-		$g_aRouting[7] = "0:4"
+		$g_aRoutingFFmpeg[7] = "0:4"
+		$g_aRoutingBMX[7] = "3"
 	Case GUICtrlRead($g_hR57) = $GUI_CHECKED
-		$g_aRouting[7] = "0:5"
+		$g_aRoutingFFmpeg[7] = "0:5"
+		$g_aRoutingBMX[7] = "4"
 	Case GUICtrlRead($g_hR67) = $GUI_CHECKED
-		$g_aRouting[7] = "0:6"
+		$g_aRoutingFFmpeg[7] = "0:6"
+		$g_aRoutingBMX[7] = "5"
 	Case GUICtrlRead($g_hR77) = $GUI_CHECKED
-		$g_aRouting[7] = "0:7"
+		$g_aRoutingFFmpeg[7] = "0:7"
+		$g_aRoutingBMX[7] = "6"
 	Case GUICtrlRead($g_hR87) = $GUI_CHECKED
-		$g_aRouting[7] = "0:8"
+		$g_aRoutingFFmpeg[7] = "0:8"
+		$g_aRoutingBMX[7] = "7"
 	Case GUICtrlRead($g_hRL7) = $GUI_CHECKED
-		$g_aRouting[7] = '"[L]"'
+		$g_aRoutingFFmpeg[7] = '"[L]"'
 		$g_bExternalWavRouted = True
 	Case GUICtrlRead($g_hRR7) = $GUI_CHECKED
-		$g_aRouting[7] = '"[R]"'
+		$g_aRoutingFFmpeg[7] = '"[R]"'
 		$g_bExternalWavRouted = True
 EndSelect
 ; track 8
 Select
 	Case GUICtrlRead($g_hRm8) = $GUI_CHECKED
-		$g_aRouting[8] = "1:0"
+		$g_aRoutingFFmpeg[8] = "1:0"
+		$g_aRoutingBMX[8] = "s1"
 		$g_bMuteRouted = True
 	Case GUICtrlRead($g_hR18) = $GUI_CHECKED
-		$g_aRouting[8] = "0:1"
+		$g_aRoutingFFmpeg[8] = "0:1"
+		$g_aRoutingBMX[8] = "0"
 	Case GUICtrlRead($g_hR28) = $GUI_CHECKED
-		$g_aRouting[8] = "0:2"
+		$g_aRoutingFFmpeg[8] = "0:2"
+		$g_aRoutingBMX[8] = "1"
 	Case GUICtrlRead($g_hR38) = $GUI_CHECKED
-		$g_aRouting[8] = "0:3"
+		$g_aRoutingFFmpeg[8] = "0:3"
+		$g_aRoutingBMX[8] = "2"
 	Case GUICtrlRead($g_hR48) = $GUI_CHECKED
-		$g_aRouting[8] = "0:4"
+		$g_aRoutingFFmpeg[8] = "0:4"
+		$g_aRoutingBMX[8] = "3"
 	Case GUICtrlRead($g_hR58) = $GUI_CHECKED
-		$g_aRouting[8] = "0:5"
+		$g_aRoutingFFmpeg[8] = "0:5"
+		$g_aRoutingBMX[8] = "4"
 	Case GUICtrlRead($g_hR68) = $GUI_CHECKED
-		$g_aRouting[8] = "0:6"
+		$g_aRoutingFFmpeg[8] = "0:6"
+		$g_aRoutingBMX[8] = "5"
 	Case GUICtrlRead($g_hR78) = $GUI_CHECKED
-		$g_aRouting[8] = "0:7"
+		$g_aRoutingFFmpeg[8] = "0:7"
+		$g_aRoutingBMX[8] = "6"
 	Case GUICtrlRead($g_hR88) = $GUI_CHECKED
-		$g_aRouting[8] = "0:8"
+		$g_aRoutingFFmpeg[8] = "0:8"
+		$g_aRoutingBMX[8] = "7"
 	Case GUICtrlRead($g_hRL8) = $GUI_CHECKED
-		$g_aRouting[8] = '"[L]"'
+		$g_aRoutingFFmpeg[8] = '"[L]"'
 		$g_bExternalWavRouted = True
 	Case GUICtrlRead($g_hRR8) = $GUI_CHECKED
-		$g_aRouting[8] = '"[R]"'
+		$g_aRoutingFFmpeg[8] = '"[R]"'
 		$g_bExternalWavRouted = True
 EndSelect
 #EndRegion - track setting
-;~ _ArrayDisplay($g_aRouting)
-For $i = 1 To UBound($g_aRouting) -1
-	ConsoleWrite($g_aRouting[$i] & @CRLF)
+;~ _ArrayDisplay($g_aRoutingFFmpeg)
+For $i = 1 To UBound($g_aRoutingFFmpeg) -1
+	ConsoleWrite($g_aRoutingFFmpeg[$i] & @CRLF)
 Next
 ConsoleWrite("$g_bMuteRouted: " & $g_bMuteRouted & @CRLF)
 ConsoleWrite("$g_bExternalWavRouted: " & $g_bExternalWavRouted & @CRLF)
@@ -546,9 +619,12 @@ SplashTextOn("Be patient", "MXF-Track-Swap will be prepared ...", 300, 50)
 If Not FileExists(@TempDir & "\ffmpeg.exe") Then
 	FileInstall('K:\ffmpeg\bin\ffmpeg.exe', @TempDir & "\ffmpeg.exe", $FC_OVERWRITE)
 EndIf
+If Not FileExists(@TempDir & "\bmxtranswrap.exe") Then
+	FileInstall('K:\bmxtranswrap\bmxtranswrap.exe', @TempDir & "\bmxtranswrap.exe", $FC_OVERWRITE)
+EndIf
 SplashOff()
 
-Local $sPathFFmpeg = @TempDir & "\"
+Local $sPathTempFolder = @TempDir & "\"
 Global $g_hTimerStart
 Global $g_sStdErrAll
 
@@ -595,65 +671,101 @@ EndFunc
 Func _ReWrap()
 	$g_hTimerStart = TimerInit()
 	GUIDelete($g_hGUI)
-	$g_hGUI = GUICreate("MXF-Track-Swap Muxing", 600, 160)
+	$g_hGUI = GUICreate("MXF-Track-Swap Muxing", 600, 240)
 	GUICtrlCreateLabel("MXF-File: " & _FileName($g_sMXFFile), 10, 10, 580, 30)
 	GUICtrlSetFont(-1, 14, 400, 0, "Courier New")
-	GUICtrlCreateLabel("Rewrapping:", 10, 50, 580, 30)
+	Global $g_hLabelInsert = GUICtrlCreateLabel("Insert Audio:", 10, 50, 580, 30)
 	GUICtrlSetFont(-1, 12, 400, 0, "Courier New")
 	Global $Progress1 = GUICtrlCreateProgress(10, 80, 580, 20)
-	Global $Edit = GUICtrlCreateLabel("", 10, 120, 260, 30)
+	GUICtrlCreateLabel("Rewrapping:", 10, 120, 580, 30)
+	GUICtrlSetFont(-1, 12, 400, 0, "Courier New")
+	Global $Progress2 = GUICtrlCreateProgress(10, 150, 580, 20)
+	Global $Edit = GUICtrlCreateLabel("", 10, 200, 260, 60)
 	GUICtrlSetFont(-1, 14, 400, 0, "Courier New")
-	Global $g_hLabelRunningTime = GUICtrlCreateLabel("", 440, 120, 150, 30, $SS_RIGHT)
+	Global $g_hLabelRunningTime = GUICtrlCreateLabel("", 440, 200, 150, 30, $SS_CENTER)
 	GUICtrlSetFont(-1, 14, 400, 0, "Courier New")
 	GUISetState(@SW_SHOW)
 
-	;~ Code zum Remuxen: Video erhalten, Audio: 1>5, 2>6, 3>3, 4>4, 5 mute, 6 mute, 7>L, 8>R
-	;~ ffmpeg -i Video.mxf  -f lavfi -i anullsrc=r=48000:cl=mono -i Stereo.wav -ar 48000 -filter_complex "[2:a]apad,channelsplit=channel_layout=stereo[L][R]" -map 0:0 -map 0:5 -map 0:6 -map 0:3 -map 0:4 -map 1:0 -map 1:0 -map "[L]" -map "[R]" -c:v copy -c:a pcm_s24le -shortest -y Video_swapped.mxf
-	Local $sCommand
-	; video file
-	$sCommand = '-i "' & $g_sMXFFile & '"'
-	; muted source
-	If $g_bMuteRouted Then
-		$sCommand &= ' -f lavfi -i anullsrc=r=48000:cl=mono'
-	EndIf
-	; external wav file
-	If $g_bExternalWavRouted Then
-		$sCommand &= ' -i "' & $g_sWAVFile & '" -ar 48000 -filter_complex "['
-		If Not $g_bMuteRouted Then
-			$sCommand &= '1'
-		Else
-			$sCommand &= '2'
-		EndIf
-		$sCommand &= ':a]apad,channelsplit=channel_layout=stereo[L][R]"'
-	EndIf
-	; video mapping
-	$sCommand &= ' -map 0:0'
-	; audio mapping
-	For $i = 1 To UBound($g_aRouting) -1
-		$sCommand &= ' -map ' & $g_aRouting[$i]
+	; do everything with bmxwrap at the end, as only this creates valid v1.3 mxf files
+	; bmxwrap can't insert external audio, so if that should be done, run ffmpeg first
+	Local $sFFmpegCommand, $sBMXCommand, $sSuffix, $sSuffixTemp
+	For $i = 1 To UBound($g_aRoutingFFmpeg) -1
+		$sSuffix &= '_' & $i & '-' & StringRegExpReplace(StringRegExpReplace($g_aRoutingFFmpeg[$i], "\d:", ""), '[\[\]"]', "")
 	Next
-	; copy video, set audio to 24 bit, use shortest file (always the mxf file) as length, overwrite existing file
-	$sCommand &= ' -c:v copy -c:a pcm_s24le -shortest -y'
-	; set encoding date as ffmpeg otherwise wouldn't create a valid op1a v1.3 file
-	Local $sDate
-	$sDate = _NowCalc()
-	$sDate = StringReplace($sDate, "/", "-") & ".000" ; including ms
-	$sCommand &= ' -metadata creation_time="' & $sDate & '"'
-	; output file
-	Local $sSuffix
-	For $i = 1 To UBound($g_aRouting) -1
-		$sSuffix &= '_' & $i & '-' & StringRegExpReplace(StringRegExpReplace($g_aRouting[$i], "\d:", ""), '[\[\]"]', "")
-	Next
+	$sSuffixTemp = $sSuffix & '_ffmpegTemp.mxf"'
 	$sSuffix &= '.mxf"'
-	$sCommand &= ' "' & @TempDir & '\' & _StripFileExtension(_FileName($g_sMXFFile)) & $sSuffix
-	ConsoleWrite("$command: " & $sCommand & @CRLF)
-	_runFFmpeg('ffmpeg ' & $sCommand, $sPathFFmpeg, 1)
+
+	; this is the default bmxtranswrap command line
+	; set TC 10:00:00:00
+	$sBMXCommand = '-y 10:00:00:00'
+	; type RDD09
+	$sBMXCommand &= ' -t rdd9'
+	; Active Format Descriptor 4-bit code from table 1 in SMPTE ST 2016-1 - full frame 16:9
+	$sBMXCommand &= ' --afd 8'
+	; the ARD ZDF HDF profile for op1a/rdd9
+	$sBMXCommand &= ' --ard-zdf-hdf'
+	; print progress percentage to stdout
+	$sBMXCommand &= ' -p'
+	; set the wave essence descriptor channel assignment label which identifies the audio layout mode in operation
+	$sBMXCommand &= ' --audio-layout as11-mode-0'
+
+	If $g_bExternalWavRouted Then
+		; ffmpeg first
+		;~ Code zum Remuxen: Video erhalten, Audio: 1>5, 2>6, 3>3, 4>4, 5 mute, 6 mute, 7>L, 8>R
+		;~ ffmpeg -i Video.mxf  -f lavfi -i anullsrc=r=48000:cl=mono -i Stereo.wav -ar 48000 -filter_complex "[2:a]apad,channelsplit=channel_layout=stereo[L][R]" -map 0:0 -map 0:5 -map 0:6 -map 0:3 -map 0:4 -map 1:0 -map 1:0 -map "[L]" -map "[R]" -c:v copy -c:a pcm_s24le -shortest -y Video_swapped.mxf
+		; video file
+		$sFFmpegCommand = '-i "' & $g_sMXFFile & '"'
+		; muted source
+		If $g_bMuteRouted Then
+			$sFFmpegCommand &= ' -f lavfi -i anullsrc=r=48000:cl=mono'
+		EndIf
+		; external wav file
+		$sFFmpegCommand &= ' -i "' & $g_sWAVFile & '" -ar 48000 -filter_complex "['
+		If Not $g_bMuteRouted Then
+			$sFFmpegCommand &= '1'
+		Else
+			$sFFmpegCommand &= '2'
+		EndIf
+		$sFFmpegCommand &= ':a]apad,channelsplit=channel_layout=stereo[L][R]"'
+		; video mapping
+		$sFFmpegCommand &= ' -map 0:0'
+		; audio mapping
+		For $i = 1 To UBound($g_aRoutingFFmpeg) -1
+			$sFFmpegCommand &= ' -map ' & $g_aRoutingFFmpeg[$i]
+		Next
+		; copy video, set audio to 24 bit, use shortest file (always the mxf file) as length, overwrite existing file
+		$sFFmpegCommand &= ' -c:v copy -c:a pcm_s24le -shortest -y'
+		; set encoding date as ffmpeg otherwise wouldn't create a valid op1a v1.3 file
+		Local $sDate
+		$sDate = _NowCalc()
+		$sDate = StringReplace($sDate, "/", "-") & ".000" ; including ms
+		$sFFmpegCommand &= ' -metadata creation_time="' & $sDate & '"'
+		; output file
+		$sFFmpegCommand &= ' "' & @TempDir & '\' & _StripFileExtension(_FileName($g_sMXFFile)) & $sSuffixTemp
+		ConsoleWrite("$sFFmpegcommand: " & $sFFmpegCommand & @CRLF)
+		_runFFmpeg('ffmpeg ' & $sFFmpegCommand, $sPathTempFolder)
+		; bmxtranswrap second
+		_runBMXwrap('bmxtranswrap ' & $sBMXCommand & ' -o "' & @TempDir & '\' & _StripFileExtension(_FileName($g_sMXFFile)) & $sSuffix & ' "' & @TempDir & '\' & _StripFileExtension(_FileName($g_sMXFFile)) & $sSuffixTemp, $sPathTempFolder)
+	Else
+		GUICtrlSetState($Progress1, $GUI_DISABLE) ; no external audio inserted
+		GUICtrlSetState($g_hLabelInsert, $GUI_DISABLE) ; no external audio inserted
+		; add audio mapping to bmx command
+		; '--track-map "4;5;0;1;2;3;s1;s1"'
+		; audio mapping
+		$sBMXCommand &= ' --track-map "'
+		For $i = 1 To UBound($g_aRoutingBMX) -1
+			$sBMXCommand &= $g_aRoutingBMX[$i] & ';'
+		Next
+		$sBMXCommand = StringTrimRight($sBMXCommand, 1) ; remove the last semicolon
+		$sBMXCommand &= '"'
+		_runBMXwrap('bmxtranswrap ' & $sBMXCommand & ' -o "' & @TempDir & '\' & _StripFileExtension(_FileName($g_sMXFFile)) & $sSuffix & ' "' & $g_sMXFFile & '"', $sPathTempFolder)
+	EndIf
 	GUICtrlSetData($Edit, "Ready")
 	WinSetOnTop($g_hGUI, "", $WINDOWS_ONTOP)
 
 EndFunc
 
-Func _runFFmpeg($command, $wd, $iProgress)
+Func _runFFmpeg($command, $wd)
 	Local $hPid = Run('"' & @ComSpec & '" /c ' & $command, $wd, @SW_HIDE, $STDOUT_CHILD + $STDERR_CHILD)
 	Local $sStdErr, $sTimer
 	Local $iTicksDuration = 0, $iTicksTime = 0, $iTimer
@@ -666,10 +778,31 @@ Func _runFFmpeg($command, $wd, $iProgress)
 			If Not $iTicksDuration Then $iTicksDuration = _GetDuration($sStdErr)
 			$iTicksTime = _GetTime($sStdErr)
 			If Not @error Then $sStdErr = ""
-			Switch $iProgress
-				Case 1
-					GUICtrlSetData($Progress1, $iTicksTime * 100 / $iTicksDuration)
-			EndSwitch
+			GUICtrlSetData($Progress1, $iTicksTime * 100 / $iTicksDuration)
+		EndIf
+		$iTimer = TimerDiff($g_hTimerStart)
+		$sTimer = _Zeit($iTimer)
+		If GUICtrlRead($g_hLabelRunningTime) <> $sTimer Then
+			GUICtrlSetData($g_hLabelRunningTime, $sTimer)
+		EndIf
+	WEnd
+EndFunc
+
+Func _runBMXwrap($command, $wd)
+	ConsoleWrite("$sBMXcommand: " & $command & @CRLF)
+	Local $hPid = Run('"' & @ComSpec & '" /c ' & $command, $wd, @SW_HIDE, $STDOUT_CHILD + $STDERR_CHILD)
+	Local $sStdErr, $sTimer
+	Local $iPercent = 0, $iTimer
+	While 1
+		Sleep(500)
+		$sStdErr = StdoutRead($hPid)
+		If @error Then ExitLoop
+		$g_sStdErrAll &= $sStdErr
+		If StringLen($sStdErr) > 0 Then
+;~ 			ConsoleWrite("StdOut: " & $sStdErr & @CRLF)
+			$iPercent = _GetPercent($sStdErr)
+			If Not @error Then $sStdErr = ""
+			GUICtrlSetData($Progress2, $iPercent)
 		EndIf
 		$iTimer = TimerDiff($g_hTimerStart)
 		$sTimer = _Zeit($iTimer)
@@ -698,6 +831,17 @@ Func _GetTime($sStdErr)
     If @error Or Not IsArray($aTime) Then Return SetError(3, 0, 0)
     Return _TimeToTicks($aTime[0], $aTime[1], $aTime[2])
 EndFunc   ;==>_GetTime
+
+Func _GetPercent($sStdErr)
+    If Not StringInStr($sStdErr, "%") Then Return SetError(1, 0, 0)
+    Local $aRegExp = StringRegExp($sStdErr, "(?i)\d{1,2}\.\d%", 3)
+    If @error Or Not IsArray($aRegExp) Then Return SetError(2, 0, 0)
+    Local $sPercent = $aRegExp[0]
+	$sPercent = StringTrimRight($sPercent, 1) ; remove %
+	ConsoleWrite("Percent: " & $sPercent & @CRLF)
+    Return $sPercent
+EndFunc
+
 
 Func _FileName($sFullPath)
 	Local $iDelimiter = StringInStr($sFullPath, "\", 0, -1)

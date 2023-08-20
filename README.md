@@ -4,9 +4,10 @@ Provide a mxf (tested only with xdcam hd 422 op1a including 8 audio tracks) and 
 
 ## Prerequisites
 
-To build your swapper yourself you need a compiled ffmpeg that must be embedded into your swapper. Customize the following code line:
+To build your swapper yourself you need a compiled ffmpeg and bmxtranswrap that must be embedded into your swapper. Customize the following code lines:
 
 `FileInstall('K:\ffmpeg\bin\ffmpeg.exe', @TempDir & "\ffmpeg.exe", $FC_OVERWRITE)`
+`FileInstall('K:\bmxtranswrap\bmxtranswrap.exe', @TempDir & "\bmxtranswrap.exe", $FC_OVERWRITE)`
 
 ## Manual
 
@@ -44,6 +45,9 @@ The new mxf file will be created in `%temp%` folder. This folder will be opened 
 - .mxf
 
 The routing example in the image above would be named `Spurkennung_1-5_2-6_3-3_4-4_5-L_6-R_7-8_8-7.mxf`.
+
+## Insides
+Wrapping with ffmpeg can't create valid v1.3 op1a mxf in ard zdf profile. This is done with bmxtranswrap. Bmxtranswrap can swap audio tracks or mute them. But it can't insert external audio. So if external audio is provided the track swapping, muting and inserting is done with ffmpeg and the mxf is rewrapped with bmxtranswrap afterwards. Else the swapping and muting is done with bmxtranswrap alone.
 
 ## Known issues
 If you use only one track ot the external stereo wav file (e.g. "[R]") it breaks: "Filter channelsplit:FL has an unconnected outut".
