@@ -3,7 +3,7 @@
 #AutoIt3Wrapper_UseX64=n
 #AutoIt3Wrapper_Res_Comment=Swaps audio tracks in mxf files.
 #AutoIt3Wrapper_Res_Description=Swaps audio tracks in mxf files.
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.8
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.10
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_LegalCopyright=Conrad Zelck
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -621,6 +621,9 @@ If Not FileExists(@TempDir & "\ffmpeg.exe") Then
 EndIf
 If Not FileExists(@TempDir & "\bmxtranswrap.exe") Then
 	FileInstall('K:\bmxtranswrap\bmxtranswrap.exe', @TempDir & "\bmxtranswrap.exe", $FC_OVERWRITE)
+EndIf
+If Not FileExists(@TempDir & "\vcruntime140_1.dll") Then ; this is needed by bmxtranswrap and normally located at "C:\Windows\System32\vcruntime140_1.dll"
+	FileInstall('K:\bmxtranswrap\vcruntime140_1.dll', @TempDir & "\vcruntime140_1.dll", $FC_OVERWRITE)
 EndIf
 SplashOff()
 

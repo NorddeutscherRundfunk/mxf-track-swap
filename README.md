@@ -4,10 +4,11 @@ Provide a mxf (tested only with xdcam hd 422 op1a including 8 audio tracks) and 
 
 ## Prerequisites
 
-To build your swapper yourself you need a compiled ffmpeg and bmxtranswrap that must be embedded into your swapper. Customize the following code lines:
+To build your swapper yourself you need a compiled ffmpeg and bmxtranswrap that must be embedded into your swapper. You eventually need the vcruntime140_1.dll too if not provided by your windows at `C:\Windows\System32`. Customize the following code lines:
 
 `FileInstall('K:\ffmpeg\bin\ffmpeg.exe', @TempDir & "\ffmpeg.exe", $FC_OVERWRITE)`
 `FileInstall('K:\bmxtranswrap\bmxtranswrap.exe', @TempDir & "\bmxtranswrap.exe", $FC_OVERWRITE)`
+`FileInstall('K:\bmxtranswrap\vcruntime140_1.dll', @TempDir & "\vcruntime140_1.dll", $FC_OVERWRITE)`
 
 ## Manual
 
