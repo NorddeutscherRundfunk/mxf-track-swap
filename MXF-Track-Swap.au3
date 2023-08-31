@@ -3,7 +3,7 @@
 #AutoIt3Wrapper_UseX64=n
 #AutoIt3Wrapper_Res_Comment=Swaps audio tracks in mxf files.
 #AutoIt3Wrapper_Res_Description=Swaps audio tracks in mxf files.
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.10
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.11
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_LegalCopyright=Conrad Zelck
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -633,7 +633,13 @@ Global $g_sStdErrAll
 
 _ReWrap()
 ShellExecute(@TempDir)
-
+While True
+    Switch GUIGetMsg()
+        Case $GUI_EVENT_CLOSE
+            ExitLoop
+    EndSwitch
+WEnd
+GUIDelete($g_hGUI)
 Exit
 
 ;~ #cs
