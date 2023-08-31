@@ -764,7 +764,8 @@ Func _ReWrap()
 		$sBMXCommand &= '"'
 		_runBMXwrap('bmxtranswrap ' & $sBMXCommand & ' -o "' & @TempDir & '\' & _StripFileExtension(_FileName($g_sMXFFile)) & $sSuffix & ' "' & $g_sMXFFile & '"', $sPathTempFolder)
 	EndIf
-	GUICtrlSetData($Edit, "Ready")
+	GUICtrlSetData($Progress2, 100)
+	GUICtrlSetData($Edit, "Done")
 	WinSetOnTop($g_hGUI, "", $WINDOWS_ONTOP)
 
 EndFunc
