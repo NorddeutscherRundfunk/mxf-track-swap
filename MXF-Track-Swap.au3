@@ -772,6 +772,14 @@ Func _ReWrap()
 	EndIf
 	GUICtrlSetData($Progress2, 100)
 	GUICtrlSetData($Edit, "Done")
+	; delete temp file if worked with external audio
+	If $g_bExternalWavRouted Then
+		ConsoleWrite('Delete: ' & '"' & @TempDir & '\' & _StripFileExtension(_FileName($g_sMXFFile)) & $sSuffixTemp & @CRLF)
+		Sleep(1000)
+		Local $iSuccess = FileDelete(StringTrimRight(@TempDir & '\' & _StripFileExtension(_FileName($g_sMXFFile)) & $sSuffixTemp, 1))
+		If @error Then ConsoleWrite("! Error : " & @error & " " & @extended & @CRLF)
+		ConsoleWrite("$iSuccess: " & $iSuccess & @CRLF)
+	EndIf
 	WinSetOnTop($g_hGUI, "", $WINDOWS_ONTOP)
 
 EndFunc
