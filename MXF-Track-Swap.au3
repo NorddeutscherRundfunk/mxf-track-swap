@@ -3,7 +3,7 @@
 #AutoIt3Wrapper_UseX64=n
 #AutoIt3Wrapper_Res_Comment=Swaps audio tracks in mxf files.
 #AutoIt3Wrapper_Res_Description=Swaps audio tracks in mxf files.
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.11
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.12
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_LegalCopyright=Conrad Zelck
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -615,6 +615,35 @@ Next
 ConsoleWrite("$g_bMuteRouted: " & $g_bMuteRouted & @CRLF)
 ConsoleWrite("$g_bExternalWavRouted: " & $g_bExternalWavRouted & @CRLF)
 
+#Region - Check for enough space in %temp%
+Local $iSize = FileGetSize($g_sMXFFile)
+ConsoleWrite("File size: " & $iSize & @CRLF)
+
+Local $iSafetyFactor = 1.01
+$iSize *= $iSafetyFactor
+$iSize = Ceiling($iSize)
+ConsoleWrite("File size with some reserve: " & $iSize & " +" & $iSafetyFactor * 100 -100 & "%" & @CRLF)
+
+If $g_bExternalWavRouted Then
+	$iSize *= 2 ; because we need that temporary ffmpeg file too
+EndIf
+
+Global $g_bEnoughSpace = False
+
+Do
+	If $iSize < _GetSpace() Then $g_bEnoughSpace = True
+	If Not $g_bEnoughSpace Then
+		Local $iReturn = MsgBox($MB_TOPMOST + $MB_OKCANCEL, "Warning", "It seems that there is not enough memory in the %temp% folder." & _
+			" Good " & _ByteSuffix($iSize) & " is required." & @CRLF & @CRLF & _
+			"You can now clean up in the %temp% folder and click 'OK' afterwards (it will be checked again) or cancel the whole thing completely.")
+		If $iReturn <> 1 Then
+			Exit
+		EndIf
+	EndIf
+Until $g_bEnoughSpace
+ConsoleWrite("Do it." & @CRLF)
+#EndRegion
+
 SplashTextOn("Be patient", "MXF-Track-Swap will be prepared ...", 300, 50)
 If Not FileExists(@TempDir & "\ffmpeg.exe") Then
 	FileInstall('K:\ffmpeg\bin\ffmpeg.exe', @TempDir & "\ffmpeg.exe", $FC_OVERWRITE)
@@ -642,7 +671,6 @@ WEnd
 GUIDelete($g_hGUI)
 Exit
 
-;~ #cs
 #Region Funcs
 Func _CheckForInputFiles($aFiles)
 ;~ 	_ArrayDisplay($aFiles)
@@ -676,6 +704,22 @@ Func _CheckForInputFiles($aFiles)
 
 EndFunc
 
+Func _GetSpace()
+	Local $iFreeSpace = DriveSpaceFree(@TempDir)
+	$iFreeSpace *= 1024 ; in KB
+	$iFreeSpace *= 1024 ; in Byte
+	ConsoleWrite("Free space: " & $iFreeSpace & @CRLF)
+	Return Int($iFreeSpace)
+EndFunc
+
+Func _ByteSuffix($iBytes)
+    Local $iIndex = 0, $aArray = [' Bytes', ' KB', ' MB', ' GB', ' TB', ' PB', ' EB', ' ZB', ' YB']
+    While $iBytes > 1023
+        $iIndex += 1
+        $iBytes /= 1024
+    WEnd
+    Return Round($iBytes) & $aArray[$iIndex]
+EndFunc   ;==>ByteSuffix
 
 Func _ReWrap()
 	$g_hTimerStart = TimerInit()
